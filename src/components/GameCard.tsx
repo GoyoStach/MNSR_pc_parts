@@ -1,6 +1,6 @@
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardTitle } from "./ui/card"
-import { cn } from "../lib/utils"
+import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
 
 interface GameCardProps {
   title: string
@@ -48,35 +48,33 @@ export function GameCard({ title, description, slug, onReveal }: GameCardProps) 
             <div className="text-6xl lg:text-7xl font-bold text-muted-foreground/60">?</div>
           </div>
         ) : (
-          <>
+          <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
             {/* Image placeholder */}
-            <div className="w-full h-24 lg:h-32 bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center mb-3">
-              <span className="text-gray-400 text-sm">Image placeholder</span>
+            <div className="w-full h-20 lg:h-24 bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
+              <span className="text-gray-400 text-xs lg:text-sm">Image placeholder</span>
             </div>
             
             {/* Content */}
-            <div className="flex-1 flex flex-col justify-between text-center">
-              <div className="space-y-2">
-                <CardTitle className="text-sm lg:text-base font-bold text-green-800 leading-tight line-clamp-2">
-                  {title}
-                </CardTitle>
-                <CardDescription className="text-xs lg:text-sm italic text-green-700 leading-relaxed line-clamp-3">
-                  {description}
-                </CardDescription>
-              </div>
-              
-              {/* Learn More Button */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  window.location.href = `/pc-parts/${slug}`
-                }}
-                className="mt-3 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs lg:text-sm font-medium rounded-md transition-colors duration-200"
-              >
-                Learn More
-              </button>
+            <div className="space-y-3 px-2">
+              <CardTitle className="text-sm lg:text-base font-bold text-green-800 leading-tight line-clamp-2">
+                {title}
+              </CardTitle>
+              <CardDescription className="text-xs lg:text-sm italic text-green-700 leading-relaxed line-clamp-2">
+                {description}
+              </CardDescription>
             </div>
-          </>
+            
+            {/* Learn More Button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                window.location.href = `/pc-parts/${slug}`
+              }}
+              className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-xs lg:text-sm font-medium rounded-md transition-colors duration-200 shadow-sm hover:shadow-md"
+            >
+              Learn More
+            </button>
+          </div>
         )}
       </CardContent>
     </Card>

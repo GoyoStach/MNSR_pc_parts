@@ -1,4 +1,4 @@
-import { cn } from "../../lib/utils"
+import { cn } from "@/lib/utils"
 import { CheckCircle2, X, XCircle } from "lucide-react"
 import { useState, useEffect, type ReactNode } from "react"
 
@@ -20,10 +20,10 @@ export function Toaster({ toasts, onRemove }: ToasterProps) {
     <div 
       className="fixed z-[9999] pointer-events-none"
       style={{
-        bottom: '20px',
+        top: '20px',
         right: '20px',
         display: 'flex',
-        flexDirection: 'column-reverse',
+        flexDirection: 'column',
         maxWidth: '420px'
       }}
     >

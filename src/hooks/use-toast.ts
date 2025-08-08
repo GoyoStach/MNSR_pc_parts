@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react"
-import type { Toast } from "../components/ui/toaster"
+import type { Toast } from "@/components/ui/toaster"
 
 let toastCount = 0
 

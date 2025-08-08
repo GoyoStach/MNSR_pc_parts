@@ -1,7 +1,7 @@
 import { useRef } from "react"
-import { GameCard } from "./GameCard"
-import { Toaster } from "./ui/toaster"
-import { useToast } from "../hooks/use-toast"
+import { GameCard } from "@/components/GameCard"
+import { Toaster } from "@/components/ui/toaster"
+import { useToast } from "@/hooks/use-toast"
 
 interface PcPart {
   slug: string
@@ -52,11 +52,10 @@ export function CardGame({ pcParts }: CardGameProps) {
     })
 
     if (!found) {
-      const validSlugs = pcParts.map(p => p.slug).join(', ')
       toast({
         variant: "destructive",
-        title: "Invalid guess",
-        description: `"${inputValue}" is not valid. Try: ${validSlugs}`
+        title: "Incorrect guess",
+        description: `"${inputValue}" is not a valid PC part`
       })
     }
 
