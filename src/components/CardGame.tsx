@@ -13,9 +13,10 @@ interface PcPart {
 interface CardGameProps {
   pcParts: PcPart[]
   onWrongId?: (title: string) => void
+  onGuessError?: (message: string, type: "success" | "error") => void
 }
 
-export function CardGame({ pcParts, onWrongId }: CardGameProps) {
+export function CardGame({ pcParts, onWrongId, onGuessError }: CardGameProps) {
   const cardRefs = useRef<{ [key: string]: any }>({})
   const [feedbackMessage, setFeedbackMessage] = useState("")
   const [feedbackType, setFeedbackType] = useState<"success" | "error" | "id_error" | "">("")
@@ -64,26 +65,40 @@ export function CardGame({ pcParts, onWrongId }: CardGameProps) {
         if (!isAlreadyRevealed) {
           // Add to revealed cards
           setRevealedCards(prev => new Set([...prev, part.slug]))
-          setFeedbackMessage(`Correct! You found the ${part.data.title}!`)
-          setFeedbackType("success")
+          const message = `Correct! You found the ${part.data.title}!`
+          if (onGuessError) {
+            onGuessError(message, "success")
+          } else {
+            setFeedbackMessage(message)
+            setFeedbackType("success")
+          }
         } else {
-          setFeedbackMessage(`Already revealed: ${part.data.title}`)
-          setFeedbackType("success")
+          const message = `Already revealed: ${part.data.title}`
+          if (onGuessError) {
+            onGuessError(message, "success")
+          } else {
+            setFeedbackMessage(message)
+            setFeedbackType("success")
+          }
         }
         found = true
       }
     })
 
     if (!found) {
-      setFeedbackMessage(`"${inputValue}" is not a valid PC part`)
-      setFeedbackType("error")
+      const message = `"${inputValue}" is not a valid PC part`
+      if (onGuessError) {
+        onGuessError(message, "error")
+      } else {
+        setFeedbackMessage(message)
+        setFeedbackType("error")
+        // Clear feedback after 3 seconds
+        setTimeout(() => {
+          setFeedbackMessage("")
+          setFeedbackType("")
+        }, 3000)
+      }
     }
-
-    // Clear feedback after 3 seconds
-    setTimeout(() => {
-      setFeedbackMessage("")
-      setFeedbackType("")
-    }, 3000)
 
     if (input) input.value = ''
   }
@@ -119,21 +134,6 @@ export function CardGame({ pcParts, onWrongId }: CardGameProps) {
     }, 2000)
   }
 
-  const handleWrongId = (title: string) => {
-    // Use parent callback if provided, otherwise use local feedback
-    if (onWrongId) {
-      onWrongId(title)
-    } else {
-      setFeedbackMessage(`Access denied for ${title}. Incorrect ID provided.`)
-      setFeedbackType("id_error")
-      
-      // Clear feedback after 4 seconds
-      setTimeout(() => {
-        setFeedbackMessage("")
-        setFeedbackType("")
-      }, 4000)
-    }
-  }
 
   const handleKeyPress = (e: KeyboardEvent) => {
     if (e.key === 'Enter') {
@@ -162,7 +162,6 @@ export function CardGame({ pcParts, onWrongId }: CardGameProps) {
             id={part.data.id}
             isRevealed={revealedCards.has(part.slug)}
             onReveal={() => setRevealedCards(prev => new Set([...prev, part.slug]))}
-            onWrongId={handleWrongId}
             ref={(el) => cardRefs.current[part.slug] = el}
           />
         ))}

@@ -16,6 +16,8 @@ interface GameWrapperProps {
 
 export function GameWrapper({ pcParts }: GameWrapperProps) {
   const [idErrorMessage, setIdErrorMessage] = useState("")
+  const [guessErrorMessage, setGuessErrorMessage] = useState("")
+  const [guessErrorType, setGuessErrorType] = useState<"success" | "error" | "">("")
 
   const handleWrongId = (title: string) => {
     setIdErrorMessage(`Access denied for ${title}. Incorrect ID provided.`)
@@ -26,8 +28,21 @@ export function GameWrapper({ pcParts }: GameWrapperProps) {
     }, 4000)
   }
 
+  const handleGuessError = (message: string, type: "success" | "error") => {
+    setGuessErrorMessage(message)
+    setGuessErrorType(type)
+    
+    // Clear error after 3 seconds
+    setTimeout(() => {
+      setGuessErrorMessage("")
+      setGuessErrorType("")
+    }, 3000)
+  }
+
   const clearError = () => {
     setIdErrorMessage("")
+    setGuessErrorMessage("")
+    setGuessErrorType("")
   }
 
   return (
@@ -49,17 +64,28 @@ export function GameWrapper({ pcParts }: GameWrapperProps) {
           </button>
         </div>
         
-        {/* Error Message Right Below Input */}
-        {idErrorMessage && (
+        {/* Error Messages Right Below Input */}
+        {(idErrorMessage || guessErrorMessage) && (
           <div className="mt-3">
-            <p className="text-sm font-medium text-red-600">
-              {idErrorMessage}
-            </p>
+            {idErrorMessage && (
+              <p className="text-sm font-medium text-red-600">
+                {idErrorMessage}
+              </p>
+            )}
+            {guessErrorMessage && (
+              <p className={`text-sm font-medium ${
+                guessErrorType === "success" 
+                  ? "text-amber-700" 
+                  : "text-red-600"
+              }`}>
+                {guessErrorMessage}
+              </p>
+            )}
           </div>
         )}
       </div>
       
-      <CardGame pcParts={pcParts} onWrongId={handleWrongId} />
+      <CardGame pcParts={pcParts} onWrongId={handleWrongId} onGuessError={handleGuessError} />
     </>
   )
 }
