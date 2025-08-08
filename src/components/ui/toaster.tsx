@@ -21,10 +21,13 @@ export function Toaster({ toasts, onRemove }: ToasterProps) {
       className="fixed z-[9999] pointer-events-none"
       style={{
         top: '20px',
-        right: '20px',
+        left: '50%',
+        transform: 'translateX(-50%)',
         display: 'flex',
         flexDirection: 'column',
-        maxWidth: '420px'
+        alignItems: 'center',
+        maxWidth: '420px',
+        width: '100%'
       }}
     >
       {toasts.map((toast) => (
@@ -65,7 +68,7 @@ function ToastComponent({ toast, onRemove }: { toast: Toast; onRemove: (id: stri
         "transform transition-all duration-300 ease-out",
         {
           "border-red-300 bg-red-50 text-red-800": toast.variant === "destructive",
-          "border-green-300 bg-green-50 text-green-800": toast.variant === "success",
+          "border-amber-300 bg-amber-50 text-amber-800": toast.variant === "success",
           "bg-white text-gray-900 border-gray-200": toast.variant === "default" || !toast.variant,
         },
         isVisible 
@@ -73,13 +76,13 @@ function ToastComponent({ toast, onRemove }: { toast: Toast; onRemove: (id: stri
           : "translate-x-full opacity-0"
       )}
       style={{
-        transform: isVisible ? 'translateX(0)' : 'translateX(100%)',
+        transform: isVisible ? 'translateY(0)' : 'translateY(-100%)',
         opacity: isVisible ? 1 : 0
       }}
     >
       <div className="flex items-start gap-3">
         <div className="flex-shrink-0 mt-0.5">
-          {toast.variant === "success" && <CheckCircle2 className="h-5 w-5 text-green-600" />}
+          {toast.variant === "success" && <CheckCircle2 className="h-5 w-5 text-amber-600" />}
           {toast.variant === "destructive" && <XCircle className="h-5 w-5 text-red-600" />}
         </div>
         <div className="grid gap-1 flex-1">

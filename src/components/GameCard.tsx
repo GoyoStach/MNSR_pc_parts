@@ -36,7 +36,7 @@ export function GameCard({ title, description, slug, onReveal }: GameCardProps) 
         "aspect-[3/4] cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg",
         "flex flex-col p-4",
         "border-2 border-muted-foreground/20 bg-muted",
-        isRevealed ? "bg-green-50 border-green-200 shadow-md cursor-default" : "hover:bg-muted/80"
+        isRevealed ? "bg-amber-50 border-amber-200 shadow-md cursor-default" : "hover:bg-muted/80"
       )}
       onClick={!isRevealed ? handleClick : undefined}
       data-slug={slug}
@@ -56,10 +56,10 @@ export function GameCard({ title, description, slug, onReveal }: GameCardProps) 
             
             {/* Content */}
             <div className="space-y-3 px-2">
-              <CardTitle className="text-sm lg:text-base font-bold text-green-800 leading-tight line-clamp-2">
+              <CardTitle className="text-sm lg:text-base font-bold text-amber-800 leading-tight line-clamp-2">
                 {title}
               </CardTitle>
-              <CardDescription className="text-xs lg:text-sm italic text-green-700 leading-relaxed line-clamp-2">
+              <CardDescription className="text-xs lg:text-sm italic text-amber-700 leading-relaxed line-clamp-2">
                 {description}
               </CardDescription>
             </div>
@@ -70,7 +70,7 @@ export function GameCard({ title, description, slug, onReveal }: GameCardProps) 
                 e.stopPropagation()
                 window.location.href = `/pc-parts/${slug}`
               }}
-              className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-xs lg:text-sm font-medium rounded-md transition-colors duration-200 shadow-sm hover:shadow-md"
+              className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs lg:text-sm font-medium rounded-md transition-colors duration-200 shadow-sm hover:shadow-md"
             >
               Learn More
             </button>

@@ -1,6 +1,6 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
-import '../../styles/global.css';
+import '@/styles/global.css';
 
 export async function getStaticPaths() {
   const pcParts = await getCollection('pc_parts');
@@ -26,22 +26,22 @@ const { Content } = await part.render();
     <meta name="generator" content={Astro.generator} />
     <title>{part.data.title} - PC Parts Guide</title>
   </head>
-  <body class="min-h-screen bg-gradient-to-br from-violet-500 via-purple-500 to-indigo-600">
-    <header class="text-center py-12 px-8 text-white">
+  <body class="min-h-screen bg-gradient-to-br from-amber-100 via-orange-50 to-yellow-100">
+    <header class="text-center py-12 px-8 text-amber-900">
       <nav class="mb-8">
         <a 
           href="/" 
-          class="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-lg hover:bg-white/30 transition-colors"
+          class="inline-flex items-center gap-2 px-4 py-2 bg-white/30 backdrop-blur-sm rounded-lg hover:bg-white/40 transition-colors border border-amber-200/50"
         >
           ← Back to Game
         </a>
       </nav>
       <h1 class="text-4xl lg:text-5xl font-bold mb-4">{part.data.title}</h1>
-      <p class="text-xl opacity-90">{part.data.description}</p>
+      <p class="text-xl opacity-80">{part.data.description}</p>
     </header>
     
     <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-      <div class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-6 lg:p-8 -mt-8">
+      <div class="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl border border-amber-200/50 p-6 lg:p-8 -mt-8">
         
         {/* Image placeholder */}
         <div class="w-full h-64 lg:h-80 bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center mb-8">
@@ -56,9 +56,9 @@ const { Content } = await part.render();
           <Content />
           
           {/* Placeholder content since markdown files are empty */}
-          <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-8">
-            <h3 class="text-lg font-semibold text-blue-800 mb-2">About {part.data.title}</h3>
-            <p class="text-blue-700">
+          <div class="bg-amber-50 border border-amber-200 rounded-lg p-6 mt-8">
+            <h3 class="text-lg font-semibold text-amber-800 mb-2">About {part.data.title}</h3>
+            <p class="text-amber-700">
               This page will contain detailed information about the {part.data.title}. 
               Content coming soon!
             </p>
@@ -88,7 +88,7 @@ const { Content } = await part.render();
         <div class="mt-8 text-center">
           <a 
             href="/" 
-            class="inline-flex items-center gap-2 px-6 py-3 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg"
+            class="inline-flex items-center gap-2 px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg"
           >
             ← Back to Game
           </a>
