@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+/* HACK NF Font */
+body {
+  font-family: 'Hack Nerd Font', 'Hack', monospace, sans-serif;
+}

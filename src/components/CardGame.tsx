@@ -1,7 +1,5 @@
-import { useRef } from "react"
 import { GameCard } from "@/components/GameCard"
-import { Toaster } from "@/components/ui/toaster"
-import { useToast } from "@/hooks/use-toast"
+import { useRef, useState } from "react"
 
 interface PcPart {
   slug: string
@@ -16,8 +14,9 @@ interface CardGameProps {
 }
 
 export function CardGame({ pcParts }: CardGameProps) {
-  const { toast, toasts, removeToast } = useToast()
   const cardRefs = useRef<{ [key: string]: any }>({})
+  const [feedbackMessage, setFeedbackMessage] = useState("")
+  const [feedbackType, setFeedbackType] = useState<"success" | "error" | "">("")
 
   const handleSubmit = () => {
     const input = document.getElementById('gameInput') as HTMLInputElement
@@ -35,29 +34,26 @@ export function CardGame({ pcParts }: CardGameProps) {
         if (!isAlreadyRevealed) {
           // Trigger card reveal
           cardElement?.click()
-          toast({
-            variant: "success",
-            title: "Correct!",
-            description: `You found the ${part.data.title}!`
-          })
+          setFeedbackMessage(`Correct! You found the ${part.data.title}!`)
+          setFeedbackType("success")
         } else {
-          toast({
-            variant: "success", 
-            title: "Already revealed",
-            description: `${part.data.title} is already shown`
-          })
+          setFeedbackMessage(`Already revealed: ${part.data.title}`)
+          setFeedbackType("success")
         }
         found = true
       }
     })
 
     if (!found) {
-      toast({
-        variant: "destructive",
-        title: "Incorrect guess",
-        description: `"${inputValue}" is not a valid PC part`
-      })
+      setFeedbackMessage(`"${inputValue}" is not a valid PC part`)
+      setFeedbackType("error")
     }
+
+    // Clear feedback after 3 seconds
+    setTimeout(() => {
+      setFeedbackMessage("")
+      setFeedbackType("")
+    }, 3000)
 
     if (input) input.value = ''
   }
@@ -80,7 +76,7 @@ export function CardGame({ pcParts }: CardGameProps) {
   return (
     <>
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 mb-8 max-w-6xl mx-auto">
-        {pcParts.slice(0, 6).map((part) => (
+        {pcParts.slice(0, pcParts.length).map((part) => (
           <GameCard
             key={part.slug}
             title={part.data.title}
@@ -90,7 +86,19 @@ export function CardGame({ pcParts }: CardGameProps) {
           />
         ))}
       </div>
-      <Toaster toasts={toasts} onRemove={removeToast} />
+      
+      {/* Feedback Message */}
+      {feedbackMessage && (
+        <div className="mt-4 text-center">
+          <p className={`text-sm font-medium ${
+            feedbackType === "success" 
+              ? "text-amber-700" 
+              : "text-red-600"
+          }`}>
+            {feedbackMessage}
+          </p>
+        </div>
+      )}
     </>
   )
 }
