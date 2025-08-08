@@ -13,6 +13,9 @@ interface GameCardProps {
 
 export function GameCard({ title, description, slug, id, isRevealed: propIsRevealed = false, onReveal }: GameCardProps) {
   const [localIsRevealed, setLocalIsRevealed] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const [idInput, setIdInput] = useState("")
+  const [showBSOD, setShowBSOD] = useState(false)
   
   // Use prop-controlled state if provided, otherwise use local state
   const isRevealed = propIsRevealed || localIsRevealed
@@ -33,53 +36,130 @@ export function GameCard({ title, description, slug, id, isRevealed: propIsRevea
     }
   }
 
+  const handleLearnMoreClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setShowModal(true)
+  }
+
+  const handleIdSubmit = () => {
+    if (parseInt(idInput) === id) {
+      window.location.href = `/pc-parts/${id}-${slug}`
+    } else {
+      setShowModal(false)
+      setShowBSOD(true)
+      // Hide BSOD after 3 seconds
+      setTimeout(() => {
+        setShowBSOD(false)
+        setIdInput("")
+      }, 3000)
+    }
+  }
+
+  const handleModalClose = () => {
+    setShowModal(false)
+    setIdInput("")
+  }
+
   return (
-    <Card 
-      className={cn(
-        "aspect-[3/4] cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg",
-        "flex flex-col p-4",
-        "border-2 border-muted-foreground/20 bg-muted",
-        isRevealed ? "bg-amber-50 border-amber-200 shadow-md cursor-default" : "hover:bg-muted/80"
-      )}
-      onClick={!isRevealed ? handleClick : undefined}
-      data-slug={slug}
-      data-revealed={isRevealed}
-    >
-      <CardContent className="p-0 flex flex-col h-full">
-        {!isRevealed ? (
-          <div className="flex-1 flex items-center justify-center">
-            <div className="text-6xl lg:text-7xl font-bold text-muted-foreground/60">?</div>
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
-            {/* Image placeholder */}
-            <div className="w-full h-20 lg:h-24 bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-              <span className="text-gray-400 text-xs lg:text-sm">Image placeholder</span>
-            </div>
-            
-            {/* Content */}
-            <div className="space-y-3 px-2">
-              <CardTitle className="text-sm lg:text-base font-bold text-amber-800 leading-tight line-clamp-2">
-                {title}
-              </CardTitle>
-              <CardDescription className="text-xs lg:text-sm italic text-amber-700 leading-relaxed line-clamp-2">
-                {description}
-              </CardDescription>
-            </div>
-            
-            {/* Learn More Button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                window.location.href = `/pc-parts/${id}-${slug}`
-              }}
-              className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs lg:text-sm font-medium rounded-md transition-colors duration-200 shadow-sm hover:shadow-md"
-            >
-              Learn More
-            </button>
-          </div>
+    <>
+      <Card 
+        className={cn(
+          "aspect-[3/4] cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg",
+          "flex flex-col p-4",
+          "border-2 border-muted-foreground/20 bg-muted",
+          isRevealed ? "bg-amber-50 border-amber-200 shadow-md cursor-default" : "hover:bg-muted/80"
         )}
-      </CardContent>
-    </Card>
+        onClick={!isRevealed ? handleClick : undefined}
+        data-slug={slug}
+        data-revealed={isRevealed}
+      >
+        <CardContent className="p-0 flex flex-col h-full">
+          {!isRevealed ? (
+            <div className="flex-1 flex items-center justify-center">
+              <div className="text-6xl lg:text-7xl font-bold text-muted-foreground/60">?</div>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
+              {/* Image placeholder */}
+              <div className="w-full h-20 lg:h-24 bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
+                <span className="text-gray-400 text-xs lg:text-sm">Image placeholder</span>
+              </div>
+              
+              {/* Content */}
+              <div className="space-y-3 px-2">
+                <CardTitle className="text-sm lg:text-base font-bold text-amber-800 leading-tight line-clamp-2">
+                  {title}
+                </CardTitle>
+                <CardDescription className="text-xs lg:text-sm italic text-amber-700 leading-relaxed line-clamp-2">
+                  {description}
+                </CardDescription>
+              </div>
+              
+              {/* Learn More Button */}
+              <button
+                onClick={handleLearnMoreClick}
+                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs lg:text-sm font-medium rounded-md transition-colors duration-200 shadow-sm hover:shadow-md"
+              >
+                Learn More
+              </button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* ID Verification Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-sm w-full mx-4">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Access Verification</h3>
+            <p className="text-sm text-gray-600 mb-4">Enter the 3-digit ID to access {title}</p>
+            <input
+              type="number"
+              value={idInput}
+              onChange={(e) => setIdInput(e.target.value)}
+              placeholder="Enter 3-digit ID"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 mb-4"
+              autoFocus
+              onKeyPress={(e) => e.key === 'Enter' && handleIdSubmit()}
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={handleIdSubmit}
+                className="flex-1 bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-md transition-colors"
+              >
+                Enter
+              </button>
+              <button
+                onClick={handleModalClose}
+                className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Fake BSOD */}
+      {showBSOD && (
+        <div className="fixed inset-0 bg-blue-600 text-white flex flex-col items-center justify-center z-50 font-mono">
+          <div className="text-center space-y-4 px-8">
+            <div className="text-8xl mb-8">💀</div>
+            <h1 className="text-4xl font-bold">SYSTEM ERROR</h1>
+            <div className="text-xl space-y-2">
+              <p>A problem has been detected and Windows has been shut down</p>
+              <p>to prevent damage to your computer.</p>
+            </div>
+            <div className="text-lg mt-8 space-y-1">
+              <p>INVALID_ACCESS_CODE</p>
+              <p>Error Code: 0x00000{id}</p>
+            </div>
+            <div className="text-sm mt-8 opacity-80">
+              <p>This screen will automatically close in a few seconds...</p>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   )
 }
