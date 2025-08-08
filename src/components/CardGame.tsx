@@ -12,12 +12,13 @@ interface PcPart {
 
 interface CardGameProps {
   pcParts: PcPart[]
+  onWrongId?: (title: string) => void
 }
 
-export function CardGame({ pcParts }: CardGameProps) {
+export function CardGame({ pcParts, onWrongId }: CardGameProps) {
   const cardRefs = useRef<{ [key: string]: any }>({})
   const [feedbackMessage, setFeedbackMessage] = useState("")
-  const [feedbackType, setFeedbackType] = useState<"success" | "error" | "">("")
+  const [feedbackType, setFeedbackType] = useState<"success" | "error" | "id_error" | "">("")
   const [revealedCards, setRevealedCards] = useState<Set<string>>(new Set())
   const [allRevealed, setAllRevealed] = useState(false)
 
@@ -118,6 +119,22 @@ export function CardGame({ pcParts }: CardGameProps) {
     }, 2000)
   }
 
+  const handleWrongId = (title: string) => {
+    // Use parent callback if provided, otherwise use local feedback
+    if (onWrongId) {
+      onWrongId(title)
+    } else {
+      setFeedbackMessage(`Access denied for ${title}. Incorrect ID provided.`)
+      setFeedbackType("id_error")
+      
+      // Clear feedback after 4 seconds
+      setTimeout(() => {
+        setFeedbackMessage("")
+        setFeedbackType("")
+      }, 4000)
+    }
+  }
+
   const handleKeyPress = (e: KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleSubmit()
@@ -145,6 +162,7 @@ export function CardGame({ pcParts }: CardGameProps) {
             id={part.data.id}
             isRevealed={revealedCards.has(part.slug)}
             onReveal={() => setRevealedCards(prev => new Set([...prev, part.slug]))}
+            onWrongId={handleWrongId}
             ref={(el) => cardRefs.current[part.slug] = el}
           />
         ))}
@@ -174,6 +192,8 @@ export function CardGame({ pcParts }: CardGameProps) {
           <p className={`text-sm font-medium ${
             feedbackType === "success" 
               ? "text-amber-700" 
+              : feedbackType === "id_error"
+              ? "text-red-600"
               : "text-red-600"
           }`}>
             {feedbackMessage}

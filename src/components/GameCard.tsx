@@ -9,13 +9,13 @@ interface GameCardProps {
   id: number
   isRevealed?: boolean
   onReveal?: () => void
+  onWrongId?: (title: string) => void
 }
 
-export function GameCard({ title, description, slug, id, isRevealed: propIsRevealed = false, onReveal }: GameCardProps) {
+export function GameCard({ title, description, slug, id, isRevealed: propIsRevealed = false, onReveal, onWrongId }: GameCardProps) {
   const [localIsRevealed, setLocalIsRevealed] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const [idInput, setIdInput] = useState("")
-  const [showBSOD, setShowBSOD] = useState(false)
   
   // Use prop-controlled state if provided, otherwise use local state
   const isRevealed = propIsRevealed || localIsRevealed
@@ -46,12 +46,8 @@ export function GameCard({ title, description, slug, id, isRevealed: propIsRevea
       window.location.href = `/pc-parts/${id}-${slug}`
     } else {
       setShowModal(false)
-      setShowBSOD(true)
-      // Hide BSOD after 3 seconds
-      setTimeout(() => {
-        setShowBSOD(false)
-        setIdInput("")
-      }, 3000)
+      setIdInput("")
+      onWrongId?.(title)
     }
   }
 
@@ -140,26 +136,6 @@ export function GameCard({ title, description, slug, id, isRevealed: propIsRevea
         </div>
       )}
 
-      {/* Fake BSOD */}
-      {showBSOD && (
-        <div className="fixed inset-0 bg-blue-600 text-white flex flex-col items-center justify-center z-50 font-mono">
-          <div className="text-center space-y-4 px-8">
-            <div className="text-8xl mb-8">💀</div>
-            <h1 className="text-4xl font-bold">SYSTEM ERROR</h1>
-            <div className="text-xl space-y-2">
-              <p>A problem has been detected and Windows has been shut down</p>
-              <p>to prevent damage to your computer.</p>
-            </div>
-            <div className="text-lg mt-8 space-y-1">
-              <p>INVALID_ACCESS_CODE</p>
-              <p>Error Code: 0x00000{id}</p>
-            </div>
-            <div className="text-sm mt-8 opacity-80">
-              <p>This screen will automatically close in a few seconds...</p>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   )
 }
