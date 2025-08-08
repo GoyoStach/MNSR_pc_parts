@@ -6,11 +6,12 @@ interface GameCardProps {
   title: string
   description: string
   slug: string
+  id: number
   isRevealed?: boolean
   onReveal?: () => void
 }
 
-export function GameCard({ title, description, slug, isRevealed: propIsRevealed = false, onReveal }: GameCardProps) {
+export function GameCard({ title, description, slug, id, isRevealed: propIsRevealed = false, onReveal }: GameCardProps) {
   const [localIsRevealed, setLocalIsRevealed] = useState(false)
   
   // Use prop-controlled state if provided, otherwise use local state
@@ -70,7 +71,7 @@ export function GameCard({ title, description, slug, isRevealed: propIsRevealed 
             <button
               onClick={(e) => {
                 e.stopPropagation()
-                window.location.href = `/pc-parts/${slug}`
+                window.location.href = `/pc-parts/${id}-${slug}`
               }}
               className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs lg:text-sm font-medium rounded-md transition-colors duration-200 shadow-sm hover:shadow-md"
             >

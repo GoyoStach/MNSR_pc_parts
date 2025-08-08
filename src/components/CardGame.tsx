@@ -6,6 +6,7 @@ interface PcPart {
   data: {
     title: string
     description: string
+    id: number
   }
 }
 
@@ -141,6 +142,7 @@ export function CardGame({ pcParts }: CardGameProps) {
             title={part.data.title}
             description={part.data.description}
             slug={part.slug}
+            id={part.data.id}
             isRevealed={revealedCards.has(part.slug)}
             onReveal={() => setRevealedCards(prev => new Set([...prev, part.slug]))}
             ref={(el) => cardRefs.current[part.slug] = el}

@@ -1,6 +1,7 @@
 ---
 title: "Storage (SSD/HDD)"
 description: "Your digital hoarder's paradise - holds everything you'll never delete"
+id: 485
 ---
 
 ## 💽 1. **Rôle du disque dur (HDD/SSD)**

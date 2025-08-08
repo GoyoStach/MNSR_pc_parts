@@ -1,6 +1,7 @@
 ---
 title: "CPU (Processor)"
 description: "The brain of your PC - thinks faster than you, complains less"
+id: 142
 ---
 
 ### 🧱 **Allumage électrique : le CPU se réveille**

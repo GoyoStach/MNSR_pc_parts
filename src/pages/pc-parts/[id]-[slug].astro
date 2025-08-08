@@ -1,0 +1,76 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import '@/styles/global.css';
+
+export async function getStaticPaths() {
+  const pcParts = await getCollection('pc_parts');
+  return pcParts.map((part) => ({
+    params: { 
+      id: part.data.id.toString(), 
+      slug: part.slug 
+    },
+    props: { part },
+  }));
+}
+
+type Props = {
+  part: CollectionEntry<'pc_parts'>;
+};
+
+const { part } = Astro.props;
+const { Content } = await part.render();
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{part.data.title} - PC Parts Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hack+Nerd+Font:wght@400;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-amber-100 via-orange-50 to-yellow-100">
+    <header class="text-center py-12 px-8 text-amber-900">
+      <nav class="mb-8">
+        <a 
+          href="/" 
+          class="inline-flex items-center gap-2 px-4 py-2 bg-white/30 backdrop-blur-sm rounded-lg hover:bg-white/40 transition-colors border border-amber-200/50"
+        >
+          ← Back to Game
+        </a>
+      </nav>
+      <h1 class="text-4xl lg:text-5xl font-bold mb-4">{part.data.title}</h1>
+      <p class="text-xl opacity-80">{part.data.description}</p>
+    </header>
+    
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <div class="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl border border-amber-200/50 p-6 lg:p-8 -mt-8">
+        
+        {/* Image placeholder */}
+        <div class="w-full h-64 lg:h-80 bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center mb-8">
+          <div class="text-center">
+            <div class="text-6xl mb-4">🖼️</div>
+            <span class="text-gray-500 text-lg">Image placeholder for {part.data.title}</span>
+          </div>
+        </div>
+
+        {/* Content area for future markdown content */}
+        <div class="prose prose-lg max-w-none">
+          <Content />
+        </div>
+        
+        <div class="mt-8 text-center">
+          <a 
+            href="/" 
+            class="inline-flex items-center gap-2 px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg"
+          >
+            ← Back to Game
+          </a>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

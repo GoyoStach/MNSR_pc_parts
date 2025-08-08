@@ -1,6 +1,7 @@
 ---
 title: "Motherboard"
 description: "The PC's nervous system - connects everything and judges your cable management"
+id: 619
 ---
 
 ## 🧩 **Rôle principal de la carte mère**

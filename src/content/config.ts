@@ -5,6 +5,7 @@ const pcPartsCollection = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
+    id: z.number(),
   }),
 });
 
