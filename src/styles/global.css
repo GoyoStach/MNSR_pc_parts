@@ -4,3 +4,160 @@
 body {
   font-family: 'Hack Nerd Font', 'Hack', monospace, sans-serif;
 }
+
+/* Enhanced Prose Styling for Markdown Content */
+.prose {
+  max-width: none;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  color: #92400e; /* amber-700 */
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.prose h1 {
+  font-size: 2.25rem;
+  border-bottom: 3px solid #fbbf24; /* amber-400 */
+  padding-bottom: 0.5rem;
+}
+
+.prose h2 {
+  font-size: 1.875rem;
+  border-bottom: 2px solid #fcd34d; /* amber-300 */
+  padding-bottom: 0.25rem;
+}
+
+.prose h3 {
+  font-size: 1.5rem;
+}
+
+.prose h4 {
+  font-size: 1.25rem;
+}
+
+.prose p {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  line-height: 1.75;
+}
+
+.prose ul,
+.prose ol {
+  margin: 1.25rem 0;
+  padding-left: 1.5rem;
+}
+
+.prose li {
+  margin: 0.5rem 0;
+}
+
+.prose strong {
+  color: #92400e; /* amber-700 */
+  font-weight: 600;
+}
+
+.prose em {
+  color: #b45309; /* amber-600 */
+}
+
+.prose code {
+  background-color: #fef3c7; /* amber-100 */
+  color: #92400e; /* amber-700 */
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.prose pre {
+  background-color: #1f2937; /* gray-800 */
+  color: #f9fafb; /* gray-50 */
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.prose pre code {
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+.prose blockquote {
+  border-left: 4px solid #fbbf24; /* amber-400 */
+  background-color: #fffbeb; /* amber-50 */
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  font-style: italic;
+  color: #92400e; /* amber-700 */
+}
+
+.prose hr {
+  border-color: #fcd34d; /* amber-300 */
+  margin: 2rem 0;
+}
+
+/* Table Styling */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  background-color: white;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.prose table thead {
+  background-color: #f59e0b; /* amber-500 */
+}
+
+.prose table th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: white;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.prose table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #fcd34d; /* amber-300 */
+  color: #374151; /* gray-700 */
+}
+
+.prose table tbody tr:nth-child(even) {
+  background-color: #fffbeb; /* amber-50 */
+}
+
+.prose table tbody tr:hover {
+  background-color: #fef3c7; /* amber-100 */
+}
+
+/* Responsive table wrapper */
+.prose .table-wrapper {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.prose .table-wrapper table {
+  min-width: 600px;
+}
+
+/* Better spacing for content sections */
+.prose > * + * {
+  margin-top: 1.5rem;
+}
+
+.prose > h2 + *,
+.prose > h3 + *,
+.prose > h4 + * {
+  margin-top: 1rem;
+}
