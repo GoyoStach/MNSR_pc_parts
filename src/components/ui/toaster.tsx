@@ -17,7 +17,16 @@ interface ToasterProps {
 
 export function Toaster({ toasts, onRemove }: ToasterProps) {
   return (
-    <div className="fixed bottom-0 right-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]">
+    <div 
+      className="fixed z-[9999] pointer-events-none"
+      style={{
+        bottom: '20px',
+        right: '20px',
+        display: 'flex',
+        flexDirection: 'column-reverse',
+        maxWidth: '420px'
+      }}
+    >
       {toasts.map((toast) => (
         <ToastComponent key={toast.id} toast={toast} onRemove={onRemove} />
       ))}
@@ -29,52 +38,67 @@ function ToastComponent({ toast, onRemove }: { toast: Toast; onRemove: (id: stri
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    setIsVisible(true)
-    const timer = setTimeout(() => {
+    // Start animation after mount
+    const timer = setTimeout(() => setIsVisible(true), 50)
+    
+    // Auto remove after 4 seconds
+    const removeTimer = setTimeout(() => {
       setIsVisible(false)
-      setTimeout(() => onRemove(toast.id), 150)
+      setTimeout(() => onRemove(toast.id), 300)
     }, 4000)
 
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(timer)
+      clearTimeout(removeTimer)
+    }
   }, [toast.id, onRemove])
 
   const handleClose = () => {
     setIsVisible(false)
-    setTimeout(() => onRemove(toast.id), 150)
+    setTimeout(() => onRemove(toast.id), 300)
   }
 
   return (
     <div
       className={cn(
-        "group pointer-events-auto relative flex w-full items-center justify-between space-x-2 overflow-hidden rounded-md border p-4 pr-6 shadow-lg transition-all",
+        "group pointer-events-auto relative flex w-full items-center justify-between space-x-3 overflow-hidden rounded-lg border p-4 pr-8 shadow-lg mb-2 min-w-[350px] max-w-[420px]",
+        "transform transition-all duration-300 ease-out",
         {
-          "border-destructive bg-destructive text-destructive-foreground": toast.variant === "destructive",
-          "border-green-500 bg-green-50 text-green-900": toast.variant === "success",
-          "bg-background text-foreground": toast.variant === "default" || !toast.variant,
+          "border-red-300 bg-red-50 text-red-800": toast.variant === "destructive",
+          "border-green-300 bg-green-50 text-green-800": toast.variant === "success",
+          "bg-white text-gray-900 border-gray-200": toast.variant === "default" || !toast.variant,
         },
-        isVisible ? "animate-in slide-in-from-right-full" : "animate-out slide-out-to-right-full"
+        isVisible 
+          ? "translate-x-0 opacity-100" 
+          : "translate-x-full opacity-0"
       )}
+      style={{
+        transform: isVisible ? 'translateX(0)' : 'translateX(100%)',
+        opacity: isVisible ? 1 : 0
+      }}
     >
-      <div className="grid gap-1">
-        <div className="flex items-center gap-2">
-          {toast.variant === "success" && <CheckCircle2 className="h-4 w-4" />}
-          {toast.variant === "destructive" && <XCircle className="h-4 w-4" />}
+      <div className="flex items-start gap-3">
+        <div className="flex-shrink-0 mt-0.5">
+          {toast.variant === "success" && <CheckCircle2 className="h-5 w-5 text-green-600" />}
+          {toast.variant === "destructive" && <XCircle className="h-5 w-5 text-red-600" />}
+        </div>
+        <div className="grid gap-1 flex-1">
           {toast.title && (
-            <div className="text-sm font-semibold [&+div]:text-xs">
+            <div className="text-sm font-semibold">
               {toast.title}
             </div>
           )}
+          {toast.description && (
+            <div className="text-sm opacity-90">
+              {toast.description}
+            </div>
+          )}
         </div>
-        {toast.description && (
-          <div className="text-sm opacity-90">
-            {toast.description}
-          </div>
-        )}
       </div>
       {toast.action}
       <button
         onClick={handleClose}
-        className="absolute right-1 top-1 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none group-hover:opacity-100"
+        className="absolute right-2 top-2 rounded-md p-1 text-gray-400 opacity-70 transition-opacity hover:text-gray-600 hover:opacity-100 focus:opacity-100 focus:outline-none"
       >
         <X className="h-4 w-4" />
       </button>

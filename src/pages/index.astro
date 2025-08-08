@@ -20,21 +20,21 @@ const pcParts = await getCollection('pc_parts');
 			<p class="text-xl opacity-90">Reveal the hidden cards by entering your guess below</p>
 		</header>
 		
-		<main class="max-w-4xl mx-auto px-8 pb-16">
-			<div class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 -mt-8">
+		<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+			<div class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-4 sm:p-6 lg:p-8 -mt-8">
 				<CardGame pcParts={pcParts} client:load />
 				
-				<div class="text-center mt-8">
+				<div class="text-center mt-6 lg:mt-8">
 					<div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
 						<input 
 							type="text" 
 							id="gameInput" 
 							placeholder="Enter PC part name..."
-							class="px-4 py-3 text-lg border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500 w-full max-w-sm"
+							class="px-4 py-3 text-base lg:text-lg border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500 w-full max-w-sm lg:max-w-md"
 						/>
 						<button 
 							id="submitBtn"
-							class="px-6 py-3 text-lg bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg active:scale-95 w-full sm:w-auto"
+							class="px-6 py-3 text-base lg:text-lg bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg active:scale-95 w-full sm:w-auto"
 						>
 							Submit
 						</button>

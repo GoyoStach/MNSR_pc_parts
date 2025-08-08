@@ -34,26 +34,49 @@ export function GameCard({ title, description, slug, onReveal }: GameCardProps) 
     <Card 
       className={cn(
         "aspect-[3/4] cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg",
-        "flex flex-col items-center justify-center p-4",
+        "flex flex-col p-4",
         "border-2 border-muted-foreground/20 bg-muted",
-        isRevealed ? "bg-green-50 border-green-200 shadow-md" : "hover:bg-muted/80"
+        isRevealed ? "bg-green-50 border-green-200 shadow-md cursor-default" : "hover:bg-muted/80"
       )}
-      onClick={handleClick}
+      onClick={!isRevealed ? handleClick : undefined}
       data-slug={slug}
       data-revealed={isRevealed}
     >
-      <CardContent className="p-0 flex flex-col items-center justify-center h-full text-center">
+      <CardContent className="p-0 flex flex-col h-full">
         {!isRevealed ? (
-          <div className="text-6xl font-bold text-muted-foreground/60">?</div>
-        ) : (
-          <div className="space-y-2">
-            <CardTitle className="text-sm font-bold text-green-800 leading-tight">
-              {title}
-            </CardTitle>
-            <CardDescription className="text-xs italic text-green-700 leading-relaxed">
-              {description}
-            </CardDescription>
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-6xl lg:text-7xl font-bold text-muted-foreground/60">?</div>
           </div>
+        ) : (
+          <>
+            {/* Image placeholder */}
+            <div className="w-full h-24 lg:h-32 bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center mb-3">
+              <span className="text-gray-400 text-sm">Image placeholder</span>
+            </div>
+            
+            {/* Content */}
+            <div className="flex-1 flex flex-col justify-between text-center">
+              <div className="space-y-2">
+                <CardTitle className="text-sm lg:text-base font-bold text-green-800 leading-tight line-clamp-2">
+                  {title}
+                </CardTitle>
+                <CardDescription className="text-xs lg:text-sm italic text-green-700 leading-relaxed line-clamp-3">
+                  {description}
+                </CardDescription>
+              </div>
+              
+              {/* Learn More Button */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  window.location.href = `/pc-parts/${slug}`
+                }}
+                className="mt-3 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs lg:text-sm font-medium rounded-md transition-colors duration-200"
+              >
+                Learn More
+              </button>
+            </div>
+          </>
         )}
       </CardContent>
     </Card>
