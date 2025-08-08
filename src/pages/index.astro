@@ -25,9 +25,7 @@ const pcParts = await getCollection('pc_parts');
 		
 		<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
 			<div class="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl border border-amber-200/50 p-4 sm:p-6 lg:p-8 -mt-8">
-				<CardGame pcParts={pcParts} client:load />
-				
-				<div class="text-center mt-6 lg:mt-8">
+				<div class="text-center mb-8">
 					<div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
 						<input 
 							type="text" 
@@ -43,6 +41,8 @@ const pcParts = await getCollection('pc_parts');
 						</button>
 					</div>
 				</div>
+				
+				<CardGame pcParts={pcParts} client:load />
 			</div>
 		</main>
 	</body>

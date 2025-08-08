@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 
@@ -6,29 +6,31 @@ interface GameCardProps {
   title: string
   description: string
   slug: string
+  isRevealed?: boolean
   onReveal?: () => void
 }
 
-export function GameCard({ title, description, slug, onReveal }: GameCardProps) {
-  const [isRevealed, setIsRevealed] = useState(false)
+export function GameCard({ title, description, slug, isRevealed: propIsRevealed = false, onReveal }: GameCardProps) {
+  const [localIsRevealed, setLocalIsRevealed] = useState(false)
+  
+  // Use prop-controlled state if provided, otherwise use local state
+  const isRevealed = propIsRevealed || localIsRevealed
+
+  // Reset local state when prop changes (for refresh functionality)
+  useEffect(() => {
+    if (!propIsRevealed) {
+      setLocalIsRevealed(false)
+    }
+  }, [propIsRevealed])
 
   const handleClick = () => {
     if (!isRevealed) {
-      setIsRevealed(true)
+      if (!propIsRevealed) {
+        setLocalIsRevealed(true)
+      }
       onReveal?.()
     }
   }
-
-  // Expose reveal method for external triggering
-  const reveal = () => {
-    if (!isRevealed) {
-      setIsRevealed(true)
-      onReveal?.()
-    }
-  }
-
-  // Attach reveal method to component for external access
-  ;(GameCard as any).reveal = reveal
 
   return (
     <Card 
